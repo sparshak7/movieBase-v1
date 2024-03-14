@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 
 const VideoPlayer = ({ id, size }) => {
   return (
@@ -10,11 +9,6 @@ const VideoPlayer = ({ id, size }) => {
       allowFullScreen
     ></iframe>
   );
-};
-
-VideoPlayer.propTypes = {
-  id: PropTypes.string.isRequired,
-  size: PropTypes.bool,
 };
 
 export default VideoPlayer;

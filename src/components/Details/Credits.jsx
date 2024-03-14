@@ -65,7 +65,6 @@ const Credits = () => {
     ],
   };
 
-  console.log(data?.cast);
   return (
     <Container maxW="container.xl">
       <Heading

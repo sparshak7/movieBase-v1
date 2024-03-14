@@ -1,5 +1,6 @@
 import {
   Box,
+  Container,
   Flex,
   HStack,
   Heading,
@@ -20,9 +21,22 @@ const MovieCarousel = () => {
 
   if (isLoading) {
     return (
-      <Flex justify="center" h="100vh" w="100%" align="center">
-        <Spinner size="xl" color="red" />
-      </Flex>
+      <Container maxW="container.xl">
+        <Flex
+          justify="center"
+          h="100vh"
+          w="100%"
+          align="center"
+          flexDirection="column"
+          gap="8"
+          p="2"
+        >
+          <Spinner size="xl" color="red" />
+          <Text color="red.400" fontFamily="DM Sans" fontSize="md">
+            If stuck in loading, please switch to WiFi connection and reload the page. The TMDB API used in this website can sometimes not work in local network for countries such as India, Russia, China etc.
+          </Text>
+        </Flex>
+      </Container>
     );
   }
 
