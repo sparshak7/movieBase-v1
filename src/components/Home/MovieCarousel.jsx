@@ -54,7 +54,7 @@ const MovieCarousel = () => {
           stopOnHover={true}
         >
           {data?.results?.map((movie) => (
-            <Link
+            <Link key={movie?.id}
               to={`/details/${"original_title" in movie ? "movie" : "tv"}/${
                 movie?.id
               }`}
