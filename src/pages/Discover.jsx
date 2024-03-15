@@ -7,6 +7,7 @@ import {
   Heading,
   Select,
   Spinner,
+  Text,
 } from "@chakra-ui/react";
 import React, { useRef, useState } from "react";
 import { useGetDiscoverQuery } from "../redux/api";
@@ -99,7 +100,6 @@ const Discover = () => {
           <Select
             w="200px"
             mb="10"
-            zIndex="999"
             onChange={(e) => setSortBy(e.target.value)}
             color="#fff"
           >

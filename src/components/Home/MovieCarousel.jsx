@@ -33,7 +33,9 @@ const MovieCarousel = () => {
         >
           <Spinner size="xl" color="red" />
           <Text color="red.400" fontFamily="DM Sans" fontSize="md">
-            If stuck in loading, please switch to WiFi connection and reload the page. The TMDB API used in this website can sometimes not work in local network for countries such as India, Russia, China etc.
+            If stuck in loading, please switch to WiFi connection and reload the
+            page. The TMDB API used in this website can sometimes not work in
+            local network for countries such as India, Russia, China etc.
           </Text>
         </Flex>
       </Container>
@@ -140,7 +142,9 @@ const MovieCarousel = () => {
                   }}
                   mb={{ lg: "1rem", md: "0.8rem", sm: "0.6rem" }}
                 >
-                  <Text>{movie ? movie.overview : ""}</Text>
+                  <Text noOfLines={{ base: "3", md: "6", lg: "50" }}>
+                    {movie ? movie.overview : ""}
+                  </Text>
                 </Flex>
               </VStack>
             </Link>

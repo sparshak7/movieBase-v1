@@ -14,10 +14,11 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
 import { MdSportsCricket } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useGetSearchQuery } from "../redux/api";
 
 const Navbar = () => {
+  const location = useLocation();
   const [searchValue, setSearchValue] = useState("");
   const [showDropDown, setShowDropDown] = useState(false);
   const { data: searchResults, isLoading } = useGetSearchQuery(searchValue);
@@ -56,7 +57,7 @@ const Navbar = () => {
         <Flex align="center" justify="space-between" p="2">
           <Flex align="center" gap="2" color="#fff">
             <Link to="/">
-              <Heading fontSize={{ base: "xl", sm: "3xl" }}>
+              <Heading fontSize={{ base: "xl", md: "3xl" }}>
                 Movie<span style={{ color: "#ef312f" }}>Base</span>
               </Heading>
             </Link>
@@ -64,7 +65,7 @@ const Navbar = () => {
           <Box position="relative">
             <InputGroup
               size="lg"
-              width={{ base: "120px", sm: "220px", md: "300px", lg: "400px" }}
+              width={{ base: "200px", sm: "250px", md: "300px" }}
             >
               <InputRightElement pointerEvents="none">
                 <SearchIcon color="#d1d5db" size="1.5rem" />
@@ -85,13 +86,13 @@ const Navbar = () => {
               <VStack
                 position="absolute"
                 ref={dropdownRef}
-                width={{ base: "120px", sm: "200px", md: "300px", lg: "400px" }}
+                width={{ base: "200px", sm: "250px", md: "300px" }}
                 top="calc(100% + 4px)"
                 bg="#0d1117"
                 boxShadow="md"
                 borderRadius="md"
                 p="2"
-                zIndex="9999"
+                zIndex="99999"
                 h="300px"
                 color="#fff"
                 gap="4"
@@ -101,6 +102,7 @@ const Navbar = () => {
                   <Link
                     to={`/details/${item?.media_type}/${item?.id}`}
                     onClick={() => setShowDropDown(false)}
+                    key={item?.id}
                   >
                     <Text _hover={{ color: "red.500" }}>
                       {item?.name || item?.title} (
@@ -114,9 +116,18 @@ const Navbar = () => {
               </VStack>
             )}
           </Box>
-          <Flex align="center" color="#fff" gap="12">
+          <Flex
+            align="center"
+            color="#fff"
+            gap={{ base: 2, sm: 2, md: 8, lg: 12 }}
+            display={{ base: "none", md: "flex" }}
+          >
             <Link to="/discover" zIndex="999">
-              <Text fontSize="lg" fontFamily="DM Sans">
+              <Text
+                fontSize={{ base: "sm", sm: "md", md: "lg" }}
+                fontFamily="DM Sans"
+                color={location.pathname === "/discover" && "red"}
+              >
                 Discover
               </Text>
             </Link>
