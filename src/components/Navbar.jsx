@@ -8,21 +8,47 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Spinner,
   Text,
   VStack,
 } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
 import { MdSportsCricket } from "react-icons/md";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useGetSearchQuery } from "../redux/api";
+import { auth } from "../services/firebase";
+import { useAuth } from "../context/useAuth";
 
 const Navbar = () => {
   const location = useLocation();
   const [searchValue, setSearchValue] = useState("");
   const [showDropDown, setShowDropDown] = useState(false);
-  const { data: searchResults, isLoading } = useGetSearchQuery(searchValue);
+  const { data: searchResults } = useGetSearchQuery(searchValue);
   const dropdownRef = useRef(null);
+  const { user, signInWithGoogle, signout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleGoogleLogin = async () => {
+    try {
+      await signInWithGoogle();
+      navigate("/")
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleSignout = async() => {
+    try {
+      await signout();
+      navigate("/")
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleChange = (e) => {
     setSearchValue(e.target.value);
@@ -131,7 +157,45 @@ const Navbar = () => {
                 Discover
               </Text>
             </Link>
-            <Avatar size="sm" />
+            {user ? (
+              <Menu>
+                <MenuButton>
+                  <Avatar size="sm" name={user?.email} src={user?.photoURL} />
+                </MenuButton>
+                <MenuList bg="#0d1117" color="#fff">
+                  <Link to="/">
+                    <MenuItem
+                      bg="#0d1117"
+                      color="#fff"
+                      _hover={{ color: "gray.400" }}
+                    >
+                      Watchlist
+                    </MenuItem>
+                  </Link>
+                  <Link to="/">
+                    <MenuItem
+                      bg="#0d1117"
+                      color="#fff"
+                      _hover={{ color: "gray.400" }}
+                    >
+                      Favourites
+                    </MenuItem>
+                  </Link>
+                  <MenuItem
+                    onClick={handleSignout}
+                    bg="#0d1117"
+                    color="#fff"
+                    _hover={{ color: "gray.400" }}
+                  >
+                    Logout
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+            ) : (
+              <Link to="/sign-in">
+                <Avatar size="sm" />
+              </Link>
+            )}
           </Flex>
         </Flex>
       </Container>

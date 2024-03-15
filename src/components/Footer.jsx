@@ -1,4 +1,4 @@
-import { Badge, Box, Container, Flex, Text } from "@chakra-ui/react";
+import { Badge, Box, Container, Divider, Flex, Text } from "@chakra-ui/react";
 import React from "react";
 import { footerData } from "../utils/footerData";
 import { Link } from "react-router-dom";
@@ -30,6 +30,7 @@ const Footer = () => {
           Made with ❤️ by Sparshak Nag
         </Text>
       </Flex>
+      <Divider my="8" />
     </Container>
   );
 };

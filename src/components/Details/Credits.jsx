@@ -21,50 +21,6 @@ const Credits = () => {
   const { data, isLoading } = useGetCreditsQuery({ type: type, id: id });
   const imgUrl = "https://image.tmdb.org/t/p/original/";
 
-  const settings = {
-    speed: 500,
-    slidesToShow: 5,
-    slidesToScroll: 5,
-    swipetoSlide: true,
-    initialSlide: 0,
-    responsive: [
-      {
-        breakpoint: 1200,
-        settings: {
-          slidesToShow: 4,
-          slidesToScroll: 4,
-          dots: true,
-          initialSlide: 0,
-        },
-      },
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
-          dots: true,
-          initialSlide: 0,
-        },
-      },
-      {
-        breakpoint: 756,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-          initialSlide: 0,
-        },
-      },
-      {
-        breakpoint: 510,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          initialSlide: 0,
-        },
-      },
-    ],
-  };
-
   return (
     <Container maxW="container.xl">
       <Heading
@@ -74,33 +30,37 @@ const Credits = () => {
       >
         Cast
       </Heading>
-      <Box my="4" p="4">
+      <Flex my="4" p="4" overflowX="scroll" gap="5">
         {data?.cast?.length === 0 ? (
           <Text fontSize="lg" color="#fff" textAlign="center">
             No cast available.
           </Text>
         ) : (
-          <Slider {...settings}>
-            {data?.cast?.slice(0, 10).map((item) => (
-              <Box color="#fff">
-                <Link to={`/cast-details/${item?.id}`}>
-                  <Flex direction="column" gap="3" key={item?.id} minW="100px">
-                    <Image
-                      src={`${imgUrl}/${item?.profile_path}`}
-                      borderRadius="10px"
-                      alt={item?.name}
-                    />
-                    <Text fontFamily="DM Sans">{item?.name}</Text>
-                    <Text fontSize="sm" fontStyle="italic" color="gray.400">
-                      {item?.character}
-                    </Text>
-                  </Flex>
-                </Link>
-              </Box>
-            ))}
-          </Slider>
+          data?.cast?.slice(0, 10).map((item) => (
+            <Box color="#fff" minW="180px">
+              <Link to={`/cast-details/${item?.id}`}>
+                <Flex
+                  direction="column"
+                  gap="3"
+                  key={item?.id}
+                  minW="100px"
+                  overflowX="scroll"
+                >
+                  <Image
+                    src={`${imgUrl}/${item?.profile_path}`}
+                    borderRadius="10px"
+                    alt={item?.name}
+                  />
+                  <Text fontFamily="DM Sans">{item?.name}</Text>
+                  <Text fontSize="sm" fontStyle="italic" color="gray.400">
+                    {item?.character}
+                  </Text>
+                </Flex>
+              </Link>
+            </Box>
+          ))
         )}
-      </Box>
+      </Flex>
       <Divider my="6" />
     </Container>
   );

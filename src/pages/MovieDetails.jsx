@@ -7,10 +7,14 @@ import Recommendation from "../components/Details/Recommendation";
 import { useEffect } from "react";
 import Videos from "../components/Details/Videos";
 import Footer from "../components/Footer";
+import Navbar from "../components/Navbar";
+import BottomNav from "../components/BottomNav";
 
 const MovieDetails = () => {
   return (
     <Box>
+      <Navbar />
+      <BottomNav />
       <Description />
       <Credits />
       <Videos />

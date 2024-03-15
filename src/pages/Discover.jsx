@@ -13,6 +13,8 @@ import React, { useRef, useState } from "react";
 import { useGetDiscoverQuery } from "../redux/api";
 import CardComponent2 from "../components/Home/CardComponent2";
 import Pagination from "../components/Pagination";
+import Navbar from "../components/Navbar";
+import BottomNav from "../components/BottomNav";
 
 const Discover = () => {
   const [type, setType] = useState("movie");
@@ -50,92 +52,96 @@ const Discover = () => {
 
   console.log(data);
   return (
-    <Box mt="8rem">
-      <Container maxW="container.xl">
-        <Flex
-          align="baseline"
-          gap="4"
-          justify="space-between"
-          ref={containerRef}
-        >
-          <Heading color="#fff" fontSize="2xl" mb="12">
-            Discover
-          </Heading>
+    <>
+      <Navbar />
+      <BottomNav />
+      <Box mt="8rem">
+        <Container maxW="container.xl">
           <Flex
-            align="center"
-            gap="2"
-            border="2px solid gray"
-            borderRadius="20px"
-            color="#fff"
+            align="baseline"
+            gap="4"
+            justify="space-between"
+            ref={containerRef}
           >
-            <Box
-              as="button"
-              px="3"
-              py="1"
+            <Heading color="#fff" fontSize="2xl" mb="12">
+              Discover
+            </Heading>
+            <Flex
+              align="center"
+              gap="2"
+              border="2px solid gray"
               borderRadius="20px"
-              bg={`${type === "movie" && "gray.500"}`}
-              onClick={() => {
-                setPage(1);
-                setType("movie");
-              }}
+              color="#fff"
             >
-              Movie
-            </Box>
-            <Box
-              as="button"
-              px="3"
-              py="1"
-              borderRadius="20px"
-              bg={`${type === "tv" && "gray.500"}`}
-              onClick={() => {
-                setPage(1);
-                setType("tv");
-              }}
-            >
-              TV Show
-            </Box>
+              <Box
+                as="button"
+                px="3"
+                py="1"
+                borderRadius="20px"
+                bg={`${type === "movie" && "gray.500"}`}
+                onClick={() => {
+                  setPage(1);
+                  setType("movie");
+                }}
+              >
+                Movie
+              </Box>
+              <Box
+                as="button"
+                px="3"
+                py="1"
+                borderRadius="20px"
+                bg={`${type === "tv" && "gray.500"}`}
+                onClick={() => {
+                  setPage(1);
+                  setType("tv");
+                }}
+              >
+                TV Show
+              </Box>
+            </Flex>
           </Flex>
-        </Flex>
-        <Flex justify="flex-end">
-          <Select
-            w="200px"
-            mb="10"
-            onChange={(e) => setSortBy(e.target.value)}
-            color="#fff"
-          >
-            <option value="popularity.desc" style={{ color: "#333" }}>
-              Popularity
-            </option>
-            <option
-              value="vote_average.desc&vote_count.gte=1000"
-              style={{ color: "#333" }}
+          <Flex justify="flex-end">
+            <Select
+              w="200px"
+              mb="10"
+              onChange={(e) => setSortBy(e.target.value)}
+              color="#fff"
             >
-              Rating
-            </option>
-          </Select>
-        </Flex>
-        <Grid
-          templateColumns={{
-            base: "repeat(1fr)",
-            sm: "repeat(2,1fr)",
-            md: "repeat(3,1fr)",
-            lg: "repeat(4,1fr)",
-          }}
-          gap="8"
-        >
-          {data?.results &&
-            data?.results?.map((item, id) => (
-              <CardComponent2 item={item} key={id} />
-            ))}
-        </Grid>
-        <Pagination
-          page={page}
-          totalPage={data?.total_pages}
-          setPage={setPage}
-        />
-        <Divider my="8" />
-      </Container>
-    </Box>
+              <option value="popularity.desc" style={{ color: "#333" }}>
+                Popularity
+              </option>
+              <option
+                value="vote_average.desc&vote_count.gte=1000"
+                style={{ color: "#333" }}
+              >
+                Rating
+              </option>
+            </Select>
+          </Flex>
+          <Grid
+            templateColumns={{
+              base: "repeat(1fr)",
+              sm: "repeat(2,1fr)",
+              md: "repeat(3,1fr)",
+              lg: "repeat(4,1fr)",
+            }}
+            gap="8"
+          >
+            {data?.results &&
+              data?.results?.map((item, id) => (
+                <CardComponent2 item={item} key={id} />
+              ))}
+          </Grid>
+          <Pagination
+            page={page}
+            totalPage={data?.total_pages}
+            setPage={setPage}
+          />
+          <Divider my="8" />
+        </Container>
+      </Box>
+    </>
   );
 };
 

@@ -32,8 +32,6 @@ const Description = () => {
   const [fav, setFav] = useState("#fff");
   const imgUrl = "https://image.tmdb.org/t/p/original/";
 
-  console.log(data);
-
   const handleClick = () => {
     if (fav === "#fff") setFav("red");
     else setFav("#fff");

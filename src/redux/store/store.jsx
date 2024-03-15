@@ -1,5 +1,4 @@
 import { configureStore } from "@reduxjs/toolkit";
-// import { playerSlice } from "../slices/playerSlice";
 import { myAPI } from "../api";
 
 export const store = configureStore({
@@ -7,5 +6,7 @@ export const store = configureStore({
     [myAPI.reducerPath]: myAPI.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(myAPI.middleware),
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }).concat(myAPI.middleware),
 });
