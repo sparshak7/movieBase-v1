@@ -37,15 +37,9 @@ const Credits = () => {
           </Text>
         ) : (
           data?.cast?.slice(0, 10).map((item) => (
-            <Box color="#fff" minW="180px">
+            <Box color="#fff" minW="180px" key={item?.id}>
               <Link to={`/cast-details/${item?.id}`}>
-                <Flex
-                  direction="column"
-                  gap="3"
-                  key={item?.id}
-                  minW="100px"
-                  overflowX="scroll"
-                >
+                <Flex direction="column" gap="3" key={item?.id} minW="100px">
                   <Image
                     src={`${imgUrl}/${item?.profile_path}`}
                     borderRadius="10px"

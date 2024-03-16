@@ -19,7 +19,12 @@ const Footer = () => {
         </Box>
         {footerData?.map((item, id) => (
           <Link key={item?.id} to={`${item?.link}`}>
-            <Badge p="2" bg="gray.800" color="#fff" fontFamily="DM Sans">
+            <Badge
+              p="2"
+              bg="gray.800"
+              color="#fff"
+              fontFamily="DM Sans"
+            >
               {item?.name}
             </Badge>
           </Link>

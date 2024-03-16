@@ -55,7 +55,7 @@ const BottomNav = () => {
               <Avatar size="sm" name={user?.email} src={user?.photoURL} />
             </MenuButton>
             <MenuList bg="#0d1117" color="#fff">
-              <Link to="/">
+              <Link to="/watchlist">
                 <MenuItem
                   bg="#0d1117"
                   color="#fff"
@@ -64,7 +64,7 @@ const BottomNav = () => {
                   Watchlist
                 </MenuItem>
               </Link>
-              <Link to="/">
+              <Link to="/favorites">
                 <MenuItem
                   bg="#0d1117"
                   color="#fff"

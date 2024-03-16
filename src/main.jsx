@@ -13,6 +13,8 @@ import PeopleDetails from "./pages/PeopleDetails.jsx";
 import Discover from "./pages/Discover.jsx";
 import SignIn from "./pages/SignIn.jsx";
 import { AuthProvider } from "./context/authProvider.jsx";
+import Watchlist from "./pages/Watchlist.jsx";
+import Protected from "./components/Protected.jsx";
 // import { PersistGate } from "redux-persist/integration/react";
 // import { persistStore } from "redux-persist";
 
@@ -41,6 +43,14 @@ const router = createBrowserRouter([
       {
         path: "/sign-in",
         element: <SignIn />,
+      },
+      {
+        path: "/watchlist",
+        element: (
+          <Protected>
+            <Watchlist />
+          </Protected>
+        ),
       },
     ],
   },

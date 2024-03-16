@@ -11,9 +11,10 @@ import {
   Image,
   Spinner,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   AddIcon,
   CheckCircleIcon,
@@ -23,19 +24,99 @@ import {
 import { MdFavorite } from "react-icons/md";
 import { useGetDetailsQuery } from "../../redux/api";
 import { colorProgress } from "../../utils/colorProgress";
+import { useAuth } from "../../context/useAuth";
+import { useFireStore } from "../../services/firestore";
 
 const Description = () => {
   const { type, id } = useParams();
   const { data, isLoading } = useGetDetailsQuery({ type: type, id: id });
-  const [list, setList] = useState(false);
-
-  const [fav, setFav] = useState("#fff");
+  // const [list, setList] = useState(false);
+  const { user } = useAuth();
+  const toast = useToast();
+  const {
+    addWatchList,
+    checkWatchList,
+    addFavouritesList,
+    checkFavorites,
+    removeWatchlist,
+    removeFavorite
+  } = useFireStore();
+  const [checkWL, setCheckWL] = useState(false);
+  const [checkFav, setCheckFav] = useState(false);
   const imgUrl = "https://image.tmdb.org/t/p/original/";
 
-  const handleClick = () => {
-    if (fav === "#fff") setFav("red");
-    else setFav("#fff");
+  const handleSaveWatchList = async () => {
+    if (!user) {
+      toast({
+        title: "You need an account to create watchlist.",
+        status: "error",
+        isClosable: true,
+        position: "bottom-right",
+      });
+      return;
+    }
+
+    const saveData = {
+      id: id,
+      title: data?.title || data?.name,
+      type: type,
+      poster_path: data?.poster_path,
+      release_date: data?.release_date || data?.first_air_date,
+      vote_average: data?.vote_average,
+      overview: data?.overview,
+    };
+    await addWatchList(user?.uid, saveData, data?.id?.toString());
+    const isPresent = await checkWatchList(user?.uid, data?.id?.toString());
+    setCheckWL(isPresent);
   };
+
+  const handleFavorites = async () => {
+    if (!user) {
+      toast({
+        title: "You need an account to save to favorites.",
+        status: "error",
+        isClosable: true,
+        position: "bottom-right",
+      });
+      return;
+    }
+
+    const saveData = {
+      id: id,
+      title: data?.title || data?.name,
+      type: type,
+      poster_path: data?.poster_path,
+      release_date: data?.release_date || data?.first_air_date,
+      vote_average: data?.vote_average,
+      overview: data?.overview,
+    };
+    await addFavouritesList(user?.uid, saveData, data?.id?.toString());
+    const isPresent = await checkFavorites(user?.uid, data?.id?.toString());
+    setCheckFav(isPresent);
+  };
+
+  const handleRemoveWatchList = async () => {
+    await removeWatchlist(user?.uid, id);
+    const isPresent = await checkWatchList(user?.uid, id);
+    setCheckWL(isPresent);
+  };
+
+  const handleRemoveFavorites = async() => {
+    await removeFavorite(user?.uid, id)
+    const isPresent = await checkFavorites(user?.uid, data?.id?.toString());
+    setCheckFav(isPresent);
+  }
+  
+
+  useEffect(() => {
+    if (!user) {
+      setCheckWL(false);
+      setCheckFav(false);
+      return;
+    }
+    checkWatchList(user?.uid, id?.toString()).then((data) => setCheckWL(data));
+    checkFavorites(user?.uid, id?.toString()).then((data) => setCheckFav(data));
+  }, [id, user, checkWatchList, checkFavorites]);
 
   if (isLoading) {
     return (
@@ -104,7 +185,19 @@ const Description = () => {
                     : `-${new Date(data?.last_air_date).getFullYear()}`} */}
                 )
               </Heading>
-              <MdFavorite size="42px" color={fav} onClick={handleClick} />
+              {checkFav ? (
+                <MdFavorite
+                  size="42px"
+                  color="red"
+                  onClick={handleRemoveFavorites}
+                />
+              ) : (
+                <MdFavorite
+                  size="42px"
+                  color="#fff"
+                  onClick={handleFavorites}
+                />
+              )}
             </Flex>
             <Text
               fontSize="sm"
@@ -144,16 +237,39 @@ const Description = () => {
               </CircularProgress>
             </Flex>
             <Flex justify={{ base: "center", md: "initial" }}>
-              <Button
-                leftIcon={list ? <CheckCircleIcon /> : <AddIcon />}
-                bg={!list ? "red.800" : "green.800"}
+              {checkWL ? (
+                <Button
+                  leftIcon={<CheckCircleIcon />}
+                  bg="green.800"
+                  color="#fff"
+                  size="md"
+                  _hover={{ bg: "green.900" }}
+                  onClick={handleRemoveWatchList}
+                >
+                  Added to watchlist!
+                </Button>
+              ) : (
+                <Button
+                  leftIcon={<AddIcon />}
+                  bg="red.800"
+                  color="#fff"
+                  size="md"
+                  _hover={{ bg: "red.900" }}
+                  onClick={handleSaveWatchList}
+                >
+                  Add to watchlist?
+                </Button>
+              )}
+              {/* <Button
+                leftIcon={checkWL ? <CheckCircleIcon /> : <AddIcon />}
+                bg={!checkWL ? "red.800" : "green.800"}
                 color="#fff"
                 size="md"
-                _hover={{ bg: !list ? "red.900" : "green.900" }}
-                onClick={() => setList(!list)}
+                _hover={{ bg: !checkWL ? "red.900" : "green.900" }}
+                onClick={handleSaveWatchList}
               >
-                {list ? "Added to watchlist!" : "Add to watchlist?"}
-              </Button>
+                {checkWL ? "Added to watchlist!" : "Add to watchlist?"}
+              </Button> */}
             </Flex>
             <Text
               fontSize={{ base: "lg", md: "md" }}
