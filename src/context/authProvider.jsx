@@ -3,6 +3,7 @@ import { auth } from "../services/firebase";
 import {
   GoogleAuthProvider,
   onAuthStateChanged,
+  signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
 } from "firebase/auth";
@@ -34,7 +35,9 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, signInWithGoogle, signout }}>
+    <AuthContext.Provider
+      value={{ user, isLoading, signInWithGoogle, signout }}
+    >
       {children}
     </AuthContext.Provider>
   );

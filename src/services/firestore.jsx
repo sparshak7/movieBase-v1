@@ -1,6 +1,14 @@
 import { db } from "../services/firebase";
-import { deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+} from "firebase/firestore";
 import { useToast } from "@chakra-ui/react";
+import { useCallback } from "react";
 
 export const useFireStore = () => {
   const toast = useToast();
@@ -123,12 +131,34 @@ export const useFireStore = () => {
     }
   };
 
+  const getWatchList = useCallback(async (userID) => {
+    const querySnapshot = await getDocs(
+      collection(db, "users", userID, "watchlist")
+    );
+    const data = querySnapshot.docs.map((doc) => ({
+      ...doc.data(),
+    }));
+    return data;
+  }, []);
+
+  const getFavorites = useCallback(async (userID) => {
+    const querySnapshot = await getDocs(
+      collection(db, "users", userID, "favorites")
+    );
+    const data = querySnapshot.docs.map((doc) => ({
+      ...doc.data(),
+    }));
+    return data;
+  }, []);
+
   return {
     addWatchList,
     checkWatchList,
     addFavouritesList,
     checkFavorites,
     removeWatchlist,
-    removeFavorite
+    removeFavorite,
+    getWatchList,
+    getFavorites
   };
 };

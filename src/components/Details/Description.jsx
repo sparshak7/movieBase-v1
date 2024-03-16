@@ -26,6 +26,7 @@ import { useGetDetailsQuery } from "../../redux/api";
 import { colorProgress } from "../../utils/colorProgress";
 import { useAuth } from "../../context/useAuth";
 import { useFireStore } from "../../services/firestore";
+import { serverTimestamp } from "firebase/firestore";
 
 const Description = () => {
   const { type, id } = useParams();
@@ -39,7 +40,7 @@ const Description = () => {
     addFavouritesList,
     checkFavorites,
     removeWatchlist,
-    removeFavorite
+    removeFavorite,
   } = useFireStore();
   const [checkWL, setCheckWL] = useState(false);
   const [checkFav, setCheckFav] = useState(false);
@@ -101,12 +102,11 @@ const Description = () => {
     setCheckWL(isPresent);
   };
 
-  const handleRemoveFavorites = async() => {
-    await removeFavorite(user?.uid, id)
+  const handleRemoveFavorites = async () => {
+    await removeFavorite(user?.uid, id);
     const isPresent = await checkFavorites(user?.uid, data?.id?.toString());
     setCheckFav(isPresent);
-  }
-  
+  };
 
   useEffect(() => {
     if (!user) {

@@ -15,4 +15,8 @@ export const footerData = [
     name: "TMDB API",
     link: "https://developer.themoviedb.org/docs/getting-started",
   },
+  {
+    name: "Firebase",
+    link: "https://firebase.google.com/",
+  },
 ];

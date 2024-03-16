@@ -14,29 +14,29 @@ import {
   Spinner,
   Text,
 } from "@chakra-ui/react";
-import ListCard from "../components/ListCard";
 import { Link } from "react-router-dom";
 import { MdOutlineExplore } from "react-icons/md";
+import FavoritesCard from "../components/FavoritesCard";
 
-const Watchlist = () => {
-  const { getWatchList } = useFireStore();
+const Favorite = () => {
+  const { getFavorites } = useFireStore();
   const { user } = useAuth();
 
-  const [watchlist, setWatchlist] = useState([]);
+  const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (user?.uid) {
-      getWatchList(user?.uid)
+      getFavorites(user?.uid)
         .then((data) => {
-          setWatchlist(data);
+          setFavorites(data);
         })
         .catch((err) => console.log(err))
         .finally(() => {
           setLoading(false);
         });
     }
-  }, [user?.id, getWatchList]);
+  }, [user?.id, getFavorites]);
 
   if (loading) {
     return (
@@ -68,17 +68,10 @@ const Watchlist = () => {
       <Container maxW="container.xl" mt="8rem" mb="4rem">
         <Flex align="baseline" gap="4" justify="space-between">
           <Heading color="#fff" fontSize="2xl" mb="12">
-            Watchlist
+            Favorites
           </Heading>
         </Flex>
-        {loading && watchlist?.length === 0 && (
-          <Flex justify="center" mt="8">
-            <Text color="#fff" fontSize="md">
-              Watchlist
-            </Text>
-          </Flex>
-        )}
-        {!loading && watchlist?.length === 0 && (
+        {!loading && favorites?.length === 0 && (
           <Flex
             justify="center"
             mt="8"
@@ -87,7 +80,7 @@ const Watchlist = () => {
             align="center"
           >
             <Text color="#fff" fontSize="md" fontFamily="DM Sans">
-              Your watchlist is empty.
+              Your favorites list is empty.
             </Text>
             <Box display={{ base: "none", md: "block" }}>
               <Link to="/discover">
@@ -102,14 +95,14 @@ const Watchlist = () => {
             </Box>
           </Flex>
         )}
-        {!loading && watchlist?.length > 0 && (
+        {!loading && favorites?.length > 0 && (
           <Grid templateColumns={{ base: "1fr" }} gap="6">
-            {watchlist?.map((item) => (
-              <ListCard
+            {favorites?.map((item) => (
+              <FavoritesCard
                 key={item?.id}
                 item={item}
                 type={item?.type}
-                setWatchlist={setWatchlist}
+                setFavorites={setFavorites}
               />
             ))}
           </Grid>
@@ -119,4 +112,4 @@ const Watchlist = () => {
   );
 };
 
-export default Watchlist;
+export default Favorite;

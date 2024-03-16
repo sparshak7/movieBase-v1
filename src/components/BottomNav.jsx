@@ -1,12 +1,14 @@
 import {
   Avatar,
   Box,
+  Button,
   Flex,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import { signOut } from "firebase/auth";
 import React from "react";
@@ -18,13 +20,25 @@ const BottomNav = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, signInWithGoogle, signout } = useAuth();
+  const toast = useToast();
 
   const handleSignout = async () => {
     try {
       await signout();
       navigate("/");
+      toast({
+        title: "Succesfully logged out.",
+        status: "success",
+        isClosable: true,
+        position: "bottom-right",
+      });
     } catch (error) {
-      console.log(error);
+      toast({
+        title: "There was an error logging out. Try again.",
+        status: "error",
+        isClosable: true,
+        position: "bottom-right",
+      });
     }
   };
 
@@ -84,8 +98,10 @@ const BottomNav = () => {
             </MenuList>
           </Menu>
         ) : (
-          <Link to="/sign-in">
-            <Avatar size="sm" />
+          <Link to="/login">
+            <Button size="sm" colorScheme="red">
+              Get Started
+            </Button>
           </Link>
         )}
       </Flex>

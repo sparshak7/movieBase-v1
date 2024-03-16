@@ -24,14 +24,14 @@ import sign from "../assets/sign.jpg";
 import { auth } from "../services/firebase";
 import {
   GoogleAuthProvider,
-  createUserWithEmailAndPassword,
   onAuthStateChanged,
   signInWithPopup,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-const SignIn = () => {
+const Login = () => {
   const [show, setShow] = useState(false);
   const toast = useToast();
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -47,11 +47,7 @@ const SignIn = () => {
   const handleClick = async () => {
     setLoading(true);
     try {
-      await createUserWithEmailAndPassword(
-        auth,
-        formData.email,
-        formData.password
-      );
+      await signInWithEmailAndPassword(auth, formData.email, formData.password);
       setLoading(false);
       navigate("/");
       toast({
@@ -61,14 +57,14 @@ const SignIn = () => {
         position: "bottom-right",
       });
     } catch (error) {
-      setLoading(false);
+      console.log(error.code);
       toast({
-        title:
-          "Please write a valid email and a password of minimum 6 characters.",
+        title: "Check your email or password again.",
         status: "error",
         isClosable: true,
         position: "bottom-right",
       });
+      setLoading(false);
     }
   };
 
@@ -105,7 +101,7 @@ const SignIn = () => {
           backdropFilter="blur(4px)"
         >
           <Heading fontFamily="DM Sans" color="#fff" mb="2">
-            Welcome to Movie<span style={{ color: "red" }}>Base</span>
+            Login to Movie<span style={{ color: "red" }}>Base</span>
           </Heading>
 
           <Flex direction="column" gap="6" color="#fff" fontFamily="DM Sans">
@@ -118,9 +114,6 @@ const SignIn = () => {
                 onChange={handleChange}
                 placeholder="Enter email"
               />
-              <FormHelperText color="gray.400" fontStyle="italic">
-                Your email is safe with us.
-              </FormHelperText>
             </FormControl>
             <FormControl>
               <FormLabel>Password</FormLabel>
@@ -146,7 +139,7 @@ const SignIn = () => {
               onClick={handleClick}
               isLoading={loading}
             >
-              Register
+              Login
             </Button>
           </Flex>
           <Button
@@ -158,10 +151,10 @@ const SignIn = () => {
             Continue with Google
           </Button>
           <Flex color="#fff" gap="1">
-            <Text fontFamily="DM Sans">Already have an account?</Text>
-            <Link to="/login">
+            <Text fontFamily="DM Sans">Don't have an account?</Text>
+            <Link to="/sign-in">
               <Text color="red" fontWeight="bold" fontFamily="DM Sans">
-                Login.
+                Register.
               </Text>
             </Link>
           </Flex>
@@ -171,4 +164,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default Login;

@@ -2,6 +2,7 @@ import { SearchIcon } from "@chakra-ui/icons";
 import {
   Avatar,
   Box,
+  Button,
   Container,
   Flex,
   Heading,
@@ -15,6 +16,7 @@ import {
   Spinner,
   Text,
   VStack,
+  useToast,
 } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
 import { MdSportsCricket } from "react-icons/md";
@@ -31,22 +33,34 @@ const Navbar = () => {
   const dropdownRef = useRef(null);
   const { user, signInWithGoogle, signout } = useAuth();
   const navigate = useNavigate();
+  const toast = useToast();
 
   const handleGoogleLogin = async () => {
     try {
       await signInWithGoogle();
-      navigate("/")
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleSignout = async() => {
+  const handleSignout = async () => {
     try {
       await signout();
-      navigate("/")
+      navigate("/");
+      toast({
+        title: "Succesfully logged out.",
+        status: "success",
+        isClosable: true,
+        position: "bottom-right",
+      });
     } catch (error) {
-      console.log(error);
+      toast({
+        title: "There was an error logging out. Try again.",
+        status: "error",
+        isClosable: true,
+        position: "bottom-right",
+      });
     }
   };
 
@@ -83,7 +97,7 @@ const Navbar = () => {
         <Flex align="center" justify="space-between" p="2">
           <Flex align="center" gap="2" color="#fff">
             <Link to="/">
-              <Heading fontSize={{ base: "xl", md: "3xl" }}>
+              <Heading fontSize={{ base: "xl", sm: "2xl", md: "3xl" }}>
                 Movie<span style={{ color: "#ef312f" }}>Base</span>
               </Heading>
             </Link>
@@ -192,8 +206,10 @@ const Navbar = () => {
                 </MenuList>
               </Menu>
             ) : (
-              <Link to="/sign-in">
-                <Avatar size="sm" />
+              <Link to="/login">
+                <Button size={{ md: "sm", lg: "lg" }} colorScheme="red">
+                  Get Started
+                </Button>
               </Link>
             )}
           </Flex>

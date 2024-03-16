@@ -15,10 +15,9 @@ import SignIn from "./pages/SignIn.jsx";
 import { AuthProvider } from "./context/authProvider.jsx";
 import Watchlist from "./pages/Watchlist.jsx";
 import Protected from "./components/Protected.jsx";
-// import { PersistGate } from "redux-persist/integration/react";
-// import { persistStore } from "redux-persist";
+import Favorite from "./pages/Favorite.jsx";
+import Login from "./pages/Login.jsx";
 
-// const persistor = persistStore(store);
 const router = createBrowserRouter([
   {
     path: "/",
@@ -45,10 +44,22 @@ const router = createBrowserRouter([
         element: <SignIn />,
       },
       {
+        path: "/login",
+        element: <Login />
+      },
+      {
         path: "/watchlist",
         element: (
           <Protected>
             <Watchlist />
+          </Protected>
+        ),
+      },
+      {
+        path: "/favorites",
+        element: (
+          <Protected>
+            <Favorite />
           </Protected>
         ),
       },
