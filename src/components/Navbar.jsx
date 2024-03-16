@@ -25,15 +25,16 @@ import { useGetSearchQuery } from "../redux/api";
 import { auth } from "../services/firebase";
 import { useAuth } from "../context/useAuth";
 
-const Navbar = () => {
+const Navbar = (ref) => {
   const location = useLocation();
   const [searchValue, setSearchValue] = useState("");
   const [showDropDown, setShowDropDown] = useState(false);
-  const { data: searchResults } = useGetSearchQuery(searchValue);
+  const { data: searchResults, isLoading } = useGetSearchQuery(searchValue);
   const dropdownRef = useRef(null);
   const { user, signInWithGoogle, signout } = useAuth();
   const navigate = useNavigate();
   const toast = useToast();
+  const [isTransparent, setIsTransparent] = useState(true);
 
   const handleGoogleLogin = async () => {
     try {
@@ -82,6 +83,21 @@ const Navbar = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 250) {
+        setIsTransparent(false);
+      } else {
+        setIsTransparent(true);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <Box
       py="4"
@@ -92,6 +108,9 @@ const Navbar = () => {
       right="0"
       zIndex="999"
       bg="transparent"
+      // bg={isTransparent ? "transparent" : "rgba(0,0,0,0.9)"}
+      opacity={isTransparent ? "1" : "0"}
+      transition="opacity 0.3s ease-in-out"
     >
       <Container maxW="container.xl">
         <Flex align="center" justify="space-between" p="2">
@@ -138,6 +157,7 @@ const Navbar = () => {
                 gap="4"
                 overflowY="scroll"
               >
+                {isLoading}
                 {searchResults?.results?.map((item) => (
                   <Link
                     to={`/details/${item?.media_type}/${item?.id}`}

@@ -17,6 +17,7 @@ import {
 import ListCard from "../components/ListCard";
 import { Link } from "react-router-dom";
 import { MdOutlineExplore } from "react-icons/md";
+import Scroller from "../components/Scroller";
 
 const Watchlist = () => {
   const { getWatchList } = useFireStore();
@@ -64,6 +65,7 @@ const Watchlist = () => {
   return (
     <>
       <Navbar />
+      <Scroller />
       <BottomNav />
       <Container maxW="container.xl" mt="8rem" mb="4rem">
         <Flex align="baseline" gap="4" justify="space-between">

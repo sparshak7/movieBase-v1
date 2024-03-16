@@ -15,6 +15,7 @@ import CardComponent2 from "../components/Home/CardComponent2";
 import Pagination from "../components/Pagination";
 import Navbar from "../components/Navbar";
 import BottomNav from "../components/BottomNav";
+import Scroller from "../components/Scroller";
 
 const Discover = () => {
   const [type, setType] = useState("movie");
@@ -50,9 +51,9 @@ const Discover = () => {
     );
   }
 
-  console.log(data);
   return (
     <>
+      <Scroller />
       <Navbar />
       <BottomNav />
       <Box mt="8rem">

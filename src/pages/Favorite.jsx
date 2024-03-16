@@ -17,6 +17,7 @@ import {
 import { Link } from "react-router-dom";
 import { MdOutlineExplore } from "react-icons/md";
 import FavoritesCard from "../components/FavoritesCard";
+import Scroller from "../components/Scroller";
 
 const Favorite = () => {
   const { getFavorites } = useFireStore();
@@ -64,6 +65,7 @@ const Favorite = () => {
   return (
     <>
       <Navbar />
+      <Scroller />
       <BottomNav />
       <Container maxW="container.xl" mt="8rem" mb="4rem">
         <Flex align="baseline" gap="4" justify="space-between">

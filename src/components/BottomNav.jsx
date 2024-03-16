@@ -11,12 +11,14 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { signOut } from "firebase/auth";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { auth } from "../services/firebase";
 import { useAuth } from "../context/useAuth";
+import { ArrowUpIcon, SearchIcon } from "@chakra-ui/icons";
 
 const BottomNav = () => {
+  const [showScrollTop, setShowScrollTop] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { user, signInWithGoogle, signout } = useAuth();
@@ -42,6 +44,26 @@ const BottomNav = () => {
     }
   };
 
+  const handleClick = () => {
+    window.scrollTo({ top: "0", behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 250) {
+        setShowScrollTop(true);
+      } else {
+        setShowScrollTop(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <Box
       p="4"
@@ -63,6 +85,7 @@ const BottomNav = () => {
             Discover
           </Text>
         </Link>
+        {showScrollTop && <SearchIcon fontSize="xl" onClick={handleClick} />}
         {user ? (
           <Menu>
             <MenuButton>

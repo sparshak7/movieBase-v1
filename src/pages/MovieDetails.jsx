@@ -9,10 +9,12 @@ import Videos from "../components/Details/Videos";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import BottomNav from "../components/BottomNav";
+import Scroller from "../components/Scroller";
 
 const MovieDetails = () => {
   return (
     <Box>
+      <Scroller />
       <Navbar />
       <BottomNav />
       <Description />

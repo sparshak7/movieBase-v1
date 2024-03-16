@@ -18,10 +18,12 @@ import MovieCarousel from "../components/Home/MovieCarousel";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import BottomNav from "../components/BottomNav";
+import Scroller from "../components/Scroller";
 
 const Home = () => {
   return (
     <Box>
+      <Scroller />
       <Navbar />
       <BottomNav />
       <MovieCarousel />

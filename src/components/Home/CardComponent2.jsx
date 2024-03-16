@@ -69,27 +69,6 @@ const CardComponent2 = ({ item }) => {
             </CircularProgressLabel>
           </CircularProgress>
         </Box>
-        {/* <Flex
-          position="absolute"
-          top="0"
-          right="0"
-          color="#fff"
-          opacity={{ base: 1, md: 0 }}
-          transition="opacity 0.3s ease-in-out"
-          className="overlay"
-          w="100%"
-          justify="flex-end"
-          bg="rgba(0,0,0,0.6)"
-        >
-          <CircularProgress
-            value={item?.vote_average?.toFixed(1) * 10}
-            color={colorProgress(item?.vote_average.toFixed(1))}
-          >
-            <CircularProgressLabel fontSize="14px">
-              {item?.vote_average.toFixed(1) * 10}%
-            </CircularProgressLabel>
-          </CircularProgress>
-        </Flex> */}
       </Box>
     </Link>
   );
