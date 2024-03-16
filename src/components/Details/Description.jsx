@@ -44,9 +44,12 @@ const Description = () => {
   } = useFireStore();
   const [checkWL, setCheckWL] = useState(false);
   const [checkFav, setCheckFav] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [loadingF, setLoadingF] = useState(false);
   const imgUrl = "https://image.tmdb.org/t/p/original/";
 
   const handleSaveWatchList = async () => {
+    setLoading(true);
     if (!user) {
       toast({
         title: "You need an account to create watchlist.",
@@ -54,6 +57,7 @@ const Description = () => {
         isClosable: true,
         position: "bottom-right",
       });
+      setLoading(false);
       return;
     }
 
@@ -69,9 +73,11 @@ const Description = () => {
     await addWatchList(user?.uid, saveData, data?.id?.toString());
     const isPresent = await checkWatchList(user?.uid, data?.id?.toString());
     setCheckWL(isPresent);
+    setLoading(false);
   };
 
   const handleFavorites = async () => {
+    setLoadingF(true);
     if (!user) {
       toast({
         title: "You need an account to save to favorites.",
@@ -79,6 +85,7 @@ const Description = () => {
         isClosable: true,
         position: "bottom-right",
       });
+      setLoadingF(false);
       return;
     }
 
@@ -94,18 +101,31 @@ const Description = () => {
     await addFavouritesList(user?.uid, saveData, data?.id?.toString());
     const isPresent = await checkFavorites(user?.uid, data?.id?.toString());
     setCheckFav(isPresent);
+    setLoadingF(false);
   };
 
   const handleRemoveWatchList = async () => {
-    await removeWatchlist(user?.uid, id);
-    const isPresent = await checkWatchList(user?.uid, id);
-    setCheckWL(isPresent);
+    setLoading(true);
+    try {
+      await removeWatchlist(user?.uid, id);
+      const isPresent = await checkWatchList(user?.uid, id);
+      setCheckWL(isPresent);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
   };
 
   const handleRemoveFavorites = async () => {
-    await removeFavorite(user?.uid, id);
-    const isPresent = await checkFavorites(user?.uid, data?.id?.toString());
-    setCheckFav(isPresent);
+    setLoadingF(true);
+    try {
+      await removeFavorite(user?.uid, id);
+      const isPresent = await checkFavorites(user?.uid, data?.id?.toString());
+      setCheckFav(isPresent);
+      setLoadingF(false);
+    } catch (error) {
+      setLoadingF(false);
+    }
   };
 
   useEffect(() => {
@@ -186,17 +206,23 @@ const Description = () => {
                 )
               </Heading>
               {checkFav ? (
-                <MdFavorite
-                  size="42px"
-                  color="red"
-                  onClick={handleRemoveFavorites}
-                />
-              ) : (
+                !loadingF ? (
+                  <MdFavorite
+                    size="42px"
+                    color="red"
+                    onClick={handleRemoveFavorites}
+                  />
+                ) : (
+                  <Spinner size="lg" color="red" />
+                )
+              ) : !loadingF ? (
                 <MdFavorite
                   size="42px"
                   color="#fff"
                   onClick={handleFavorites}
                 />
+              ) : (
+                <Spinner size="lg" color="red" />
               )}
             </Flex>
             <Text
@@ -245,6 +271,7 @@ const Description = () => {
                   size="md"
                   _hover={{ bg: "green.900" }}
                   onClick={handleRemoveWatchList}
+                  isLoading={loading}
                 >
                   Added to watchlist!
                 </Button>
@@ -256,6 +283,7 @@ const Description = () => {
                   size="md"
                   _hover={{ bg: "red.900" }}
                   onClick={handleSaveWatchList}
+                  isLoading={loading}
                 >
                   Add to watchlist?
                 </Button>

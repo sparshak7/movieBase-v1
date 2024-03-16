@@ -31,8 +31,6 @@ const DescriptionPeople = () => {
   const [list, setList] = useState(false);
   const imgUrl = "https://image.tmdb.org/t/p/original/";
 
-  console.log(data);
-
   if (isLoading) {
     return (
       <Container maxW="container.xl">
@@ -98,7 +96,7 @@ const DescriptionPeople = () => {
             >
               Born in {data?.place_of_birth}
             </Text>
-            <Flex justify={{ base: "center", md: "initial" }} mt="6">
+            {/* <Flex justify={{ base: "center", md: "initial" }} mt="6">
               <Button
                 leftIcon={list ? <CheckCircleIcon /> : <AddIcon />}
                 bg={!list ? "red.800" : "green.800"}
@@ -109,7 +107,7 @@ const DescriptionPeople = () => {
               >
                 {list ? "Added to favourites!" : "Add to favourites?"}
               </Button>
-            </Flex>
+            </Flex> */}
             <Text
               fontSize={{ base: "lg", md: "md" }}
               my="6"
